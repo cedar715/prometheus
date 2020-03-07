@@ -12,7 +12,6 @@ spec:
   type: NodePort
   ports:
     - port: 8080
-      protocol: tcp
       name: prom-server-port
       targetPort: 9090
       nodePort: 8080
