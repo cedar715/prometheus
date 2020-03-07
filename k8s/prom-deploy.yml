@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prom-deploy
+  namespace: monitoring
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prom
+          image: prom/prometheus:v2.2.1
+          args:
+            - "--config.file=/etc/prometheus/prometheus.file"
+            - "--storage.tsdb.path=/prometheus"
+            - "web.enable-lifecycle"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - mountPath: /etc/prometheus/
+              name: prom-config-vol
+            - mountPath: /prometheus/
+              name: prom-storage-vol
+      volumes:
+        - name: prom-config-vol
+          configMap:
+            name: prom-server-conf
+
+        - name: prom-storage-vol
+          emptyDir: {}
+
+
