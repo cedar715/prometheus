@@ -2,9 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prom-server-conf
+  namespace: monitoring
   labels:
     app: prometheus
-    namespace: monitoring
 data:
   prometheus.yml: |
     scrape_configs:
